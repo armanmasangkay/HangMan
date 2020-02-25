@@ -10,11 +10,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 /**
  *
@@ -34,8 +32,10 @@ public class Dictionary {
     
     
     public boolean loadWords() throws IOException{
-        URL url=getClass().getResource("HangMan/res/1-1000.txt");
-        File file = new File(url.getPath()); 
+        
+        
+        File file = new File("res/words.txt"); 
+   
         System.out.println(file.getPath());
         BufferedReader br; 
         try {

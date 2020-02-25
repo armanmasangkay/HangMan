@@ -6,7 +6,9 @@
 package hangman;
 
 import hangman.Classes.Dictionary;
+import hangman.Classes.RandomWord;
 import java.io.IOException;
+
 
 /**
  *
@@ -19,9 +21,11 @@ public class HangMan {
      */
     public static void main(String[] args) throws IOException {
         Dictionary dict=new Dictionary();
-        dict.loadWords();
+        RandomWord rand=new RandomWord(dict);
         
-        System.out.println(dict.getWords().size());
+        dict.loadWords(); 
+        rand.generate();
+        System.out.println(rand.getWord());
     }
     
 }

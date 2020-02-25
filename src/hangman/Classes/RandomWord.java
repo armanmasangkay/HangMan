@@ -5,14 +5,36 @@
  */
 package hangman.Classes;
 
+import java.util.Random;
+
 /**
  *
  * @author armanmasangkay
  */
 public class RandomWord {
+    private final Dictionary dict;
+    private String word;
+            
+    public RandomWord(Dictionary dict) {
+        this.dict = dict;
+    }
+
+    public String getWord() {
+        return word;
+    }
     
-    
-//    public String show(){
-//        
-//    }
+    public void generate(){
+        
+       String tempWord;
+       
+        //this will make sure that we only have 3 or more letters to guess
+        do{
+            Random rand=new Random();
+            int randIndex=rand.nextInt(dict.getWords().size());
+            tempWord=dict.getWords().get(randIndex);
+        }while(tempWord.length()<3);
+        
+        
+      word=tempWord;
+    }
 }

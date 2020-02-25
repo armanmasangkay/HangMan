@@ -5,17 +5,42 @@
  */
 package hangman.UI;
 
+import hangman.Classes.Dictionary;
+import hangman.Classes.Guess;
+import hangman.Classes.MysteryWord;
+import hangman.Classes.RandomWord;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author armanmasangkay
  */
 public class MainForm extends javax.swing.JFrame {
-
+    Guess myGuess;
+    RandomWord randomWord;
+    MysteryWord mWord;
     /**
      * Creates new form MainForm
      */
     public MainForm() {
         initComponents();
+        Dictionary dict=new Dictionary();
+        try {
+            dict.loadWords();
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(rootPane, "Problem loading words to the dictionary");
+        }
+        
+        myGuess=new Guess();
+        
+        randomWord=new RandomWord(dict);
+        randomWord.generate();
+        mWord=new MysteryWord(randomWord);
+        System.out.println(randomWord.getWord());
+        mysteryLbl.setText(mWord.getWord());
     }
 
     /**
@@ -30,6 +55,7 @@ public class MainForm extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         scoreLbl = new javax.swing.JLabel();
+        mysteryLbl = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addKeyListener(new java.awt.event.KeyAdapter() {
@@ -44,7 +70,7 @@ public class MainForm extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 377, Short.MAX_VALUE)
+            .addGap(0, 387, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -55,20 +81,21 @@ public class MainForm extends javax.swing.JFrame {
 
         scoreLbl.setText("<<Score>>");
 
+        mysteryLbl.setText("<<Word to guess>>");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(mysteryLbl)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(scoreLbl))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(scoreLbl)))
                 .addContainerGap(26, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -80,15 +107,22 @@ public class MainForm extends javax.swing.JFrame {
                     .addComponent(scoreLbl))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(68, 68, 68))
+                .addGap(18, 18, 18)
+                .addComponent(mysteryLbl)
+                .addGap(34, 34, 34))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
-        System.out.println(evt.getKeyChar());
+       // System.out.println(evt.getKeyChar());
+        myGuess.setKeyGuess(evt.getKeyChar());
         
+        if(mWord.checkGuess(myGuess)){
+            mysteryLbl.setText(mWord.getWord());
+        }
+     
         
     }//GEN-LAST:event_formKeyPressed
 
@@ -130,6 +164,7 @@ public class MainForm extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel mysteryLbl;
     private javax.swing.JLabel scoreLbl;
     // End of variables declaration//GEN-END:variables
 }
