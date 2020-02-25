@@ -5,6 +5,9 @@
  */
 package hangman;
 
+import hangman.Classes.Dictionary;
+import java.io.IOException;
+
 /**
  *
  * @author armanmasangkay
@@ -14,8 +17,11 @@ public class HangMan {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        // TODO code application logic here
+    public static void main(String[] args) throws IOException {
+        Dictionary dict=new Dictionary();
+        dict.loadWords();
+        
+        System.out.println(dict.getWords().size());
     }
     
 }
