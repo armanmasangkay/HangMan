@@ -10,9 +10,10 @@ import hangman.Classes.GameManager;
 import hangman.Classes.Guess;
 import hangman.Classes.MysteryWord;
 import hangman.Classes.RandomWord;
+import java.awt.Color;
+
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import javax.swing.JOptionPane;
 
 /**
@@ -27,9 +28,21 @@ public class MainForm extends javax.swing.JFrame {
     /**
      * Creates new form MainForm
      */
+    
+//    class DrawPane extends JPanel{
+//        @Override
+//        public void paintComponent(Graphics g) {
+//            g.fillRect(0, 0, 100, 200); // Draw on g here e.g.
+//        }
+//    }
+ 
+    
+    
     public MainForm() {
         initComponents();
-        Dictionary dict=new Dictionary();
+        //[386, 313]
+        Dictionary dict=new Dictionary(); 
+        
         gm=new GameManager();
         try {
             dict.loadWords();
@@ -39,11 +52,17 @@ public class MainForm extends javax.swing.JFrame {
         
         myGuess=new Guess();
         
+        
         randomWord=new RandomWord(dict);
         randomWord.generate();
         mWord=new MysteryWord(randomWord);
         System.out.println(randomWord.getWord());
         mysteryLbl.setText(mWord.getWord());
+    }
+    
+    
+    public void createBoard(){
+        
     }
     
     public void generateNewWord(){
@@ -62,10 +81,10 @@ public class MainForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         scoreLbl = new javax.swing.JLabel();
         mysteryLbl = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addKeyListener(new java.awt.event.KeyAdapter() {
@@ -74,24 +93,26 @@ public class MainForm extends javax.swing.JFrame {
             }
         });
 
-        jPanel1.setBackground(new java.awt.Color(153, 153, 153));
+        jLabel1.setText("Score:");
+
+        scoreLbl.setText("<<Score>>");
+
+        mysteryLbl.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
+        mysteryLbl.setText("<<Word to guess>>");
+
+        jPanel1.setBackground(new java.awt.Color(204, 255, 255));
+        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 387, Short.MAX_VALUE)
+            .addGap(0, 389, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 284, Short.MAX_VALUE)
+            .addGap(0, 309, Short.MAX_VALUE)
         );
-
-        jLabel1.setText("Score:");
-
-        scoreLbl.setText("<<Score>>");
-
-        mysteryLbl.setText("<<Word to guess>>");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -100,24 +121,24 @@ public class MainForm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(mysteryLbl)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(mysteryLbl)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(scoreLbl)))
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(35, Short.MAX_VALUE)
+                .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(scoreLbl))
-                .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(mysteryLbl)
                 .addGap(34, 34, 34))
         );
@@ -183,6 +204,8 @@ public class MainForm extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+       
+   
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -209,11 +232,18 @@ public class MainForm extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainForm().setVisible(true);
+                 DrawPane dp=new DrawPane();
+                 dp.setSize(386, 313);
+                 dp.setLocation(25, 50);
+                 dp.setBackground(Color.darkGray);
+//     
+                MainForm main=new MainForm();
+                main.add(dp);
+                main.setVisible(true);
             }
         });
     }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
