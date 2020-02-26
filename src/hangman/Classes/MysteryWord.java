@@ -16,10 +16,21 @@ public class MysteryWord {
     private final RandomWord rw;
     private String word;
     
+    private final char[] randomWord;
+    private final char[] mysteryWord;
 
     public MysteryWord(RandomWord rw) {
         this.rw = rw;
-        word=rw.getWord().replaceAll(".", "- ");
+        word=this.rw.getWord();
+        
+        //save each character to an array;
+        randomWord=new char[word.length()];
+        mysteryWord=new char[word.length()];
+        for (int i=0;i<word.length();i++){
+            randomWord[i]=word.charAt(i);
+            mysteryWord[i]='_';
+        }
+        
     }
     
     public boolean checkGuess(Guess guess){
@@ -31,13 +42,27 @@ public class MysteryWord {
     }
   
     public String getWord() {
-        return word;
+        String res="";
+        for (int i=0;i<mysteryWord.length;i++){
+            res+= mysteryWord[i]+" ";
+        }
+        return res;
+    }
+    public String getWordWithoutSpace(){
+        String res="";
+        for (int i=0;i<mysteryWord.length;i++){
+            res+= mysteryWord[i];
+        }
+        return res;
     }
     
+    
     public void update(Guess guess){
-        //String guessStr=String.valueOf(guess.getKeyGuess());
-        String regex="[^"+rw.getWord()+"]";
-        word=rw.getWord().replaceAll(regex, "_ " );
+       for (int i=0;i<mysteryWord.length;i++){        
+           if (guess.getKeyGuess()==randomWord[i]){
+               mysteryWord[i]=randomWord[i];
+           }
+       }    
     }
     
     

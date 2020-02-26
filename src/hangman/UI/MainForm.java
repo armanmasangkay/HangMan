@@ -6,6 +6,7 @@
 package hangman.UI;
 
 import hangman.Classes.Dictionary;
+import hangman.Classes.GameManager;
 import hangman.Classes.Guess;
 import hangman.Classes.MysteryWord;
 import hangman.Classes.RandomWord;
@@ -22,12 +23,14 @@ public class MainForm extends javax.swing.JFrame {
     Guess myGuess;
     RandomWord randomWord;
     MysteryWord mWord;
+    GameManager gm;
     /**
      * Creates new form MainForm
      */
     public MainForm() {
         initComponents();
         Dictionary dict=new Dictionary();
+        gm=new GameManager();
         try {
             dict.loadWords();
         } catch (IOException ex) {
@@ -37,6 +40,13 @@ public class MainForm extends javax.swing.JFrame {
         myGuess=new Guess();
         
         randomWord=new RandomWord(dict);
+        randomWord.generate();
+        mWord=new MysteryWord(randomWord);
+        System.out.println(randomWord.getWord());
+        mysteryLbl.setText(mWord.getWord());
+    }
+    
+    public void generateNewWord(){
         randomWord.generate();
         mWord=new MysteryWord(randomWord);
         System.out.println(randomWord.getWord());
@@ -116,13 +126,56 @@ public class MainForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
-       // System.out.println(evt.getKeyChar());
-        myGuess.setKeyGuess(evt.getKeyChar());
-        
-        if(mWord.checkGuess(myGuess)){
-            mysteryLbl.setText(mWord.getWord());
+
+        //check if there are still available tries
+        System.out.println(gm.getTriesLeft());
+        if (gm.getTriesLeft()>1){
+            //gets your keypressed and update the mystery word everytime you get it right
+            myGuess.setKeyGuess(evt.getKeyChar());
+            if(mWord.checkGuess(myGuess)){
+                mWord.update(myGuess);
+                mysteryLbl.setText(mWord.getWord());
+                
+                
+                //checks if the player cracked the word or not
+                if(mWord.getWordWithoutSpace().equalsIgnoreCase(randomWord.getWord())){
+                   
+                    //if yes we show them an option to proceed;
+                    //if no we close the app
+                    int choice=JOptionPane.showConfirmDialog(rootPane, "Would you like to proceed?",
+                            "Horray! You cracked the word",JOptionPane.YES_NO_OPTION);
+                    
+                    if(choice==0){
+                      gm.addScore();
+                      scoreLbl.setText(String.valueOf(gm.getScore()));
+                      this.generateNewWord(); 
+                      gm.retry();
+                    }else{
+                      System.exit(1);
+                    }
+                    
+                }
+                
+            }else{
+                gm.deductTries();
+            }
+        }else{
+            int choice=JOptionPane.showConfirmDialog(rootPane, "Game Over\n Try again?",
+                            "Ooops!",JOptionPane.YES_NO_OPTION);
+            
+            if (choice==0){
+                this.generateNewWord();
+                gm.resetScore();
+                scoreLbl.setText(String.valueOf(gm.getScore()));
+                gm.retry();
+            }else{
+                System.exit(1);
+            }
         }
-     
+        
+      
+      
+       
         
     }//GEN-LAST:event_formKeyPressed
 
