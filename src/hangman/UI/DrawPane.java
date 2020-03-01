@@ -14,20 +14,75 @@ import java.awt.Graphics;
  */
 public class DrawPane extends javax.swing.JPanel {
 
+    
+    private boolean[] drawings;
     /**
      * Creates new form DrawPane
      */
     public DrawPane() {
         initComponents();
+        drawings=new boolean[10];
+        
     }
     
     @Override
     public void paintComponent( Graphics g ) {
         super.paintComponent(g);
-        g.setColor(Color.red);
-        g.drawRect(0, 0, 100, 100);
-
+        
+        if (drawings[0]){
+            g.setColor(Color.red);
+            g.fillRect(this.getWidth()-120,this.getHeight()-20,100,10); 
+        }
+        
+        if (drawings[1]){
+            g.setColor(Color.green);
+            g.fillRect(this.getWidth()-80,this.getHeight()-270,10,250); 
+        }
+        if (drawings[2]){
+             g.setColor(Color.blue);
+            g.fillRect(140,32,this.getWidth()-210,10); 
+        }
+        if (drawings[3]){
+             g.setColor(Color.red);
+            g.fillRect(160,40,10,20); 
+        }
+        if (drawings[4]){
+            g.setColor(Color.red);
+            g.drawOval(140,40,40,40); 
+        }
+            
+       
+       
     }
+    
+    
+    //baseline of the post
+    public void draw1(){
+        drawings[0]=true;
+        this.repaint();
+    }
+    //rod
+    public void draw2(){
+        drawings[1]=true;
+        this.repaint();
+    }
+    //the horizontal rod
+    public void draw3(){
+        drawings[2]=true;
+        this.repaint();
+    }
+    
+    //rope
+    public void draw4(){
+        drawings[3]=true;
+        this.repaint();
+    }
+    //head
+    public void draw5(){
+        drawings[4]=true;
+        this.repaint();
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
